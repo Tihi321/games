@@ -1,0 +1,26 @@
+{
+  "name": "cdn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "games": "cpy web/ public",
+    "netlify": "cpy netlify.toml public",
+    "generate": "ts-node src/index.ts",
+    "index": "cpy index.html public",
+    "deploy": "yarn games && yarn netlify && yarn index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tihi321/cdn.git"
+  },
+  "author": "Tihomir Selak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tihi321/cdn/issues"
+  },
+  "homepage": "https://github.com/Tihi321/cdn#readme",
+  "devDependencies": {
+    "cpy-cli": "^5.0.0"
+  }
+}
