@@ -30,7 +30,7 @@ jobs:
           node-version: 18
 
       # Runs a set of commands using the runners shell
-      - name: Build cdn site
+      - name: Build games site
         run: |
           yarn install
           yarn deploy
