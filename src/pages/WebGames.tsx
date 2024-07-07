@@ -6,7 +6,7 @@ const games = [
   {
     name: "Space Labyrinth",
     description: "Navigate through the maze of space.",
-    url: "/godot/space-labyrinth",
+    url: "/godot/space-labyrint",
   },
   // Add more games here
 ];
