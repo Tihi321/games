@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "games": "cpy web/ public",
-    "netlify": "cpy netlify.toml public",
-    "generate": "ts-node src/index.ts",
-    "index": "cpy index.html public",
-    "deploy": "yarn games && yarn netlify && yarn index"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "netlify": "cpy netlify.toml dist",
+    "deploy": "yarn build && yarn netlify"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,21 @@
     "url": "https://github.com/Tihi321/cdn/issues"
   },
   "homepage": "https://github.com/Tihi321/cdn#readme",
+  "dependencies": {
+    "@suid/icons-material": "^0.7.0",
+    "@suid/material": "^0.16.0",
+    "lodash": "^4.17.21",
+    "solid-js": "^1.8.17",
+    "solid-styled-components": "^0.28.5",
+    "uuid": "^9.0.1"
+  },
   "devDependencies": {
-    "cpy-cli": "^5.0.0"
+    "cpy-cli": "^5.0.0",
+    "@types/lodash": "^4.14.201",
+    "@types/node": "^20.14.9",
+    "@types/uuid": "^9.0.7",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.1",
+    "vite-plugin-solid": "^2.10.2"
   }
 }
