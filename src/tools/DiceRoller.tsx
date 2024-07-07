@@ -9,8 +9,8 @@ export const DiceRoller: Component = () => {
   const [selectedDice, setSelectedDice] = createSignal<boolean[]>([]);
   const [isRolling, setIsRolling] = createSignal<boolean>(false);
   const [consistentRolls, setConsistentRolls] = createSignal<number>(0);
-  const [previousSum, setPreviousSum] = createSignal<number | null>(null);
   const [currentSum, setCurrentSum] = createSignal<number>(0);
+  const [selectedSum, setSelectedSum] = createSignal<number>(0);
 
   const rollingSoundEffect = new Audio(
     "https://cdn.tihomir-selak.from.hr/assets/sfx/rolling-dice-roll.mp3"
@@ -19,11 +19,15 @@ export const DiceRoller: Component = () => {
     "https://cdn.tihomir-selak.from.hr/assets/sfx/rolling-dice-end.mp3"
   );
 
-  createEffect(() => {
+  const initializeDice = () => {
     const initialValues = Array(numDice()).fill(1);
     setDiceValues(initialValues);
     setSelectedDice(Array(numDice()).fill(true));
     setCurrentSum(initialValues.reduce((acc, val) => acc + val, 0));
+  };
+
+  createEffect(() => {
+    initializeDice();
   });
 
   const rollDice = () => {
@@ -51,13 +55,9 @@ export const DiceRoller: Component = () => {
 
       const newSum = newValues.reduce((acc, val) => acc + val, 0);
       setCurrentSum(newSum);
+      updateSelectedSum(newValues);
 
-      if (previousSum() === newSum) {
-        setConsistentRolls((prev) => prev + 1);
-      } else {
-        setConsistentRolls(1);
-      }
-      setPreviousSum(newSum);
+      setConsistentRolls((prev) => prev + 1);
     }, 4000);
   };
 
@@ -67,11 +67,20 @@ export const DiceRoller: Component = () => {
       newSelection[index] = !newSelection[index];
       return newSelection;
     });
+    updateSelectedSum(diceValues());
   };
 
-  const resetRolls = () => {
+  const updateSelectedSum = (values: number[]) => {
+    const newSelectedSum = values.reduce(
+      (sum, value, index) => (!selectedDice()[index] ? sum + value : sum),
+      0
+    );
+    setSelectedSum(newSelectedSum);
+  };
+
+  const resetAll = () => {
     setConsistentRolls(0);
-    setPreviousSum(null);
+    initializeDice();
   };
 
   return (
@@ -101,8 +110,8 @@ export const DiceRoller: Component = () => {
         >
           {isRolling() ? "Rolling..." : "Roll Dice"}
         </Button>
-        <Button variant="outlined" onClick={resetRolls} startIcon={<RestartAltIcon />}>
-          Reset Rolls
+        <Button variant="outlined" onClick={resetAll} startIcon={<RestartAltIcon />}>
+          Reset All
         </Button>
       </Box>
       <Box
@@ -144,12 +153,16 @@ export const DiceRoller: Component = () => {
         <Checkbox
           checked={selectedDice().every(Boolean)}
           indeterminate={selectedDice().some(Boolean) && !selectedDice().every(Boolean)}
-          onChange={() => setSelectedDice((prev) => prev.map(() => !prev.every(Boolean)))}
+          onChange={() => {
+            setSelectedDice((prev) => prev.map(() => !prev.every(Boolean)));
+            updateSelectedSum(diceValues());
+          }}
         />
         <span>Select/Deselect All</span>
       </Box>
       <Box sx={{ textAlign: "center" }}>
-        <p>Sum of Dice: {currentSum()}</p>
+        <p>Sum of All Dice: {currentSum()}</p>
+        <p>Sum of Selected Dice: {selectedSum()}</p>
         <p>Consistent Rolls: {consistentRolls()}</p>
       </Box>
     </Box>
