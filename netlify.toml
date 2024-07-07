@@ -6,7 +6,7 @@ Access-Control-Allow-Origin = "*"
 
 # Specific header configuration for /web and paths under it
 [[headers]]
-for = "/web/*"
+for = "/webgames/*"
 [headers.values]
 Cross-Origin-Embedder-Policy = "require-corp"
 Cross-Origin-Opener-Policy = "same-origin"
