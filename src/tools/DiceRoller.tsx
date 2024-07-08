@@ -4,7 +4,7 @@ import CasinoIcon from "@suid/icons-material/Casino";
 import RestartAltIcon from "@suid/icons-material/RestartAlt";
 
 export const DiceRoller: Component = () => {
-  const [numDice, setNumDice] = createSignal<number>(3);
+  const [numDice, setNumDice] = createSignal<number>(1);
   const [diceValues, setDiceValues] = createSignal<number[]>([]);
   const [selectedDice, setSelectedDice] = createSignal<boolean[]>([]);
   const [isRolling, setIsRolling] = createSignal<boolean>(false);
