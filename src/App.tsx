@@ -17,6 +17,7 @@ import { styled } from "solid-styled-components";
 import { WebGames } from "./pages/WebGames";
 import { Footer } from "./components/layout/Footer";
 import { DiceRoller } from "./tools/DiceRoller";
+import { SrazGame } from "./games/Sraz/Sraz";
 
 const Container = styled("div")`
   display: flex;
@@ -24,7 +25,7 @@ const Container = styled("div")`
   min-height: 100vh;
 `;
 
-const tools: string[] = ["webgames", "dice-roller"];
+const tools: string[] = ["webgames", "dice-roller", "sraz"];
 
 export const App = () => {
   const [isDrawerOpen, setIsDrawerOpen] = createSignal<boolean>(false);
@@ -80,6 +81,7 @@ export const App = () => {
       <Box component="main" sx={{ p: 3 }}>
         <Show when={selectedPath()}>
           {selectedPath() === "webgames" && <WebGames />}
+          {selectedPath() === "sraz" && <SrazGame />}
           {selectedPath() === "dice-roller" && <DiceRoller />}
         </Show>
       </Box>
