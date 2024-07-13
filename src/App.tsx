@@ -17,6 +17,7 @@ import { styled } from "solid-styled-components";
 import { WebGames } from "./pages/WebGames";
 import { Footer } from "./components/layout/Footer";
 import { DiceRoller } from "./tools/DiceRoller";
+import { Embed } from "./components/embed/Embed";
 
 const Container = styled("div")`
   display: flex;
@@ -24,7 +25,11 @@ const Container = styled("div")`
   min-height: 100vh;
 `;
 
-const tools: string[] = ["webgames", "dice-roller"];
+const Content = styled.div`
+  flex: 1;
+`;
+
+const tools: string[] = ["webgames", "dice-roller", "recko", "krizko"];
 
 export const App = () => {
   const [isDrawerOpen, setIsDrawerOpen] = createSignal<boolean>(false);
@@ -77,11 +82,19 @@ export const App = () => {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ p: 3 }}>
-        <Show when={selectedPath()}>
-          {selectedPath() === "webgames" && <WebGames />}
-          {selectedPath() === "dice-roller" && <DiceRoller />}
-        </Show>
+      <Box component="main" sx={{ flex: 1, display: "flex", width: "100%" }}>
+        <Content>
+          <Show when={selectedPath()}>
+            {selectedPath() === "webgames" && <WebGames />}
+            {selectedPath() === "dice-roller" && <DiceRoller />}
+            {selectedPath() === "recko" && (
+              <Embed src="https://recko.tihomir-selak.from.hr" title="Recko" />
+            )}
+            {selectedPath() === "krizko" && (
+              <Embed src="https://krizko.tihomir-selak.from.hr" title="Krizko" />
+            )}
+          </Show>
+        </Content>
       </Box>
       <Footer />
     </Container>

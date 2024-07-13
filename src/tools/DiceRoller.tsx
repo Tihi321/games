@@ -90,8 +90,8 @@ export const DiceRoller: Component = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
         padding: "20px",
+        height: "100%",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", marginBottom: "20px", gap: "10px" }}>
