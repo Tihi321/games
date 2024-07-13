@@ -1,19 +1,25 @@
 import { styled } from "solid-styled-components";
+import { createSignal, Show, For, onMount, Component } from "solid-js";
+import { Drawer, List, ListItemButton, ListItemText, IconButton, Box } from "@suid/material";
+import MenuIcon from "@suid/icons-material/Menu";
+import replace from "lodash/replace";
+import startCase from "lodash/startCase";
 
-// Footer Component
-const StyledFooter = styled("footer")`
-  margin-top: auto;
+const Container = styled("footer")`
   background-color: ${(props) => props?.theme?.colors.darkBackground};
   color: ${(props) => props?.theme?.colors.text};
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  padding: 8px;
+  flex-direction: row;
+  align-items: center;
+  height: 46px;
+  gap: 8px;
+  padding-right: 16px;
 `;
 
-const InfodFooter = styled("div")`
+const InfoFooter = styled("div")`
   display: flex;
   gap: 16px;
   align-items: center;
@@ -33,6 +39,7 @@ const Websites = styled("div")`
 `;
 
 const Socials = styled("div")`
+  margin-left: auto;
   display: flex;
   gap: 6px;
 
@@ -46,10 +53,44 @@ const Socials = styled("div")`
   }
 `;
 
-export const Footer = () => {
+interface FooterProps {
+  onToolChange: (toolName: string) => void;
+  tools: string[];
+}
+
+export const Footer: Component<FooterProps> = ({ onToolChange, tools }) => {
+  const [isDrawerOpen, setIsDrawerOpen] = createSignal<boolean>(false);
+  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen());
+
+  const selectTool = (toolName: string) => {
+    onToolChange(toolName);
+    history.pushState({}, "", `?path=${toolName}`);
+    setIsDrawerOpen(false);
+  };
+
   return (
-    <StyledFooter>
-      <InfodFooter>
+    <Container>
+      <Drawer anchor="left" open={isDrawerOpen()} onClose={toggleDrawer}>
+        <List sx={{ width: "250px" }}>
+          <For each={tools}>
+            {(toolName, index) => (
+              <ListItemButton onClick={() => selectTool(toolName)}>
+                {index() + 1}. <ListItemText primary={startCase(replace(toolName, "-", " "))} />
+              </ListItemButton>
+            )}
+          </For>
+        </List>
+      </Drawer>
+      <IconButton
+        size="large"
+        color="inherit"
+        aria-label="menu"
+        sx={{ color: "#fff" }} /* Ensure icon is visible */
+        onClick={toggleDrawer}
+      >
+        <MenuIcon />
+      </IconButton>
+      <InfoFooter>
         <Websites>
           <div>
             Blog: <a href="https://tihomir-selak.from.hr/">tihomir-selak.from.hr</a>
@@ -58,7 +99,7 @@ export const Footer = () => {
             Web: <a href="https://kobilica.hr">kobilica.hr</a>
           </div>
         </Websites>
-      </InfodFooter>
+      </InfoFooter>
 
       <Socials>
         <a href="mailto:tihomir.selak@outlook.com" target="_blank">
@@ -123,6 +164,6 @@ export const Footer = () => {
           </svg>
         </a>
       </Socials>
-    </StyledFooter>
+    </Container>
   );
 };
