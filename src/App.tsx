@@ -28,9 +28,6 @@ export const App = () => {
         <Show when={selectedPath()}>
           {selectedPath() === "webgames" && <WebGames />}
           {selectedPath() === "dice-roller" && <DiceRoller />}
-          {selectedPath() === "godot-space-labyrint" && (
-            <Embed src={`${window.location.origin}/godot/space-labyrint`} title="Space Labirint" />
-          )}
           {selectedPath() === "kvizollama" && (
             <Embed src="https://kvizollama.tihomir-selak.from.hr?footer=hide" title="Kvizollama" />
           )}
