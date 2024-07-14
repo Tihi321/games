@@ -1,23 +1,4 @@
 import { styled } from "solid-styled-components";
-import { createSignal, Show, For, onMount, Component } from "solid-js";
-import { Drawer, List, ListItemButton, ListItemText, IconButton, Box } from "@suid/material";
-import MenuIcon from "@suid/icons-material/Menu";
-import replace from "lodash/replace";
-import startCase from "lodash/startCase";
-
-const Container = styled("footer")`
-  background-color: ${(props) => props?.theme?.colors.darkBackground};
-  color: ${(props) => props?.theme?.colors.text};
-  display: flex;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  height: 46px;
-  gap: 8px;
-  padding-right: 16px;
-`;
 
 const InfoFooter = styled("div")`
   display: flex;
@@ -53,43 +34,9 @@ const Socials = styled("div")`
   }
 `;
 
-interface FooterProps {
-  onToolChange: (toolName: string) => void;
-  tools: string[];
-}
-
-export const Footer: Component<FooterProps> = ({ onToolChange, tools }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = createSignal<boolean>(false);
-  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen());
-
-  const selectTool = (toolName: string) => {
-    onToolChange(toolName);
-    history.pushState({}, "", `?path=${toolName}`);
-    setIsDrawerOpen(false);
-  };
-
+export const Footer = () => {
   return (
-    <Container>
-      <Drawer anchor="left" open={isDrawerOpen()} onClose={toggleDrawer}>
-        <List sx={{ width: "250px" }}>
-          <For each={tools}>
-            {(toolName, index) => (
-              <ListItemButton onClick={() => selectTool(toolName)}>
-                {index() + 1}. <ListItemText primary={startCase(replace(toolName, "-", " "))} />
-              </ListItemButton>
-            )}
-          </For>
-        </List>
-      </Drawer>
-      <IconButton
-        size="large"
-        color="inherit"
-        aria-label="menu"
-        sx={{ color: "#fff" }} /* Ensure icon is visible */
-        onClick={toggleDrawer}
-      >
-        <MenuIcon />
-      </IconButton>
+    <>
       <InfoFooter>
         <Websites>
           <div>
@@ -100,7 +47,6 @@ export const Footer: Component<FooterProps> = ({ onToolChange, tools }) => {
           </div>
         </Websites>
       </InfoFooter>
-
       <Socials>
         <a href="mailto:tihomir.selak@outlook.com" target="_blank">
           <svg
@@ -164,6 +110,6 @@ export const Footer: Component<FooterProps> = ({ onToolChange, tools }) => {
           </svg>
         </a>
       </Socials>
-    </Container>
+    </>
   );
 };
