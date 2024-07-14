@@ -4,6 +4,7 @@ import { WebGames } from "./pages/WebGames";
 import { Frame } from "./components/layout/Frame";
 import { DiceRoller } from "./tools/DiceRoller";
 import { Embed } from "./components/embed/Embed";
+import { getURLParams } from "./utils";
 
 const Container = styled("div")`
   display: flex;
@@ -17,7 +18,7 @@ export const App = () => {
   const [selectedPath, setSelectedPath] = createSignal<string>();
 
   onMount(() => {
-    const initialPath = location.search.replace("?path=", "");
+    const initialPath = getURLParams("path");
     setSelectedPath(initialPath || "webgames");
   });
 
@@ -27,7 +28,7 @@ export const App = () => {
         <Show when={selectedPath()}>
           {selectedPath() === "webgames" && <WebGames />}
           {selectedPath() === "dice-roller" && <DiceRoller />}
-          {selectedPath() === "space-labyrint" && (
+          {selectedPath() === "godot-space-labyrint" && (
             <Embed src={`${window.location.origin}/godot/space-labyrint`} title="Space Labirint" />
           )}
           {selectedPath() === "kvizollama" && (

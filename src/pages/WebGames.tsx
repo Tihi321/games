@@ -6,7 +6,7 @@ const games = [
   {
     name: "Space Labyrinth",
     description: "Navigate through the maze of space.",
-    url: "godot/space-labyrint",
+    path: "godot-space-labyrint",
   },
   // Add more games here
 ];
@@ -28,7 +28,7 @@ export const WebGames = () => {
           >
             <h2>{game.name}</h2>
             <p>{game.description}</p>
-            <a href={`${window.location.origin}/${game.url}`}>Play Now</a>
+            <a href={`${window.location.origin}?path=${game.path}`}>Play Now</a>
           </Box>
         )}
       </For>
