@@ -7,13 +7,15 @@ import startCase from "lodash/startCase";
 import { Footer } from "./Footer";
 
 const MenuContainer = styled("nav")`
-  background-color: ${(props) => props?.theme?.colors.darkBackground};
-  color: ${(props) => props?.theme?.colors.text};
+  background-color: ${(props) => props?.theme?.colors.lightBackground};
+  color: ${(props) => props?.theme?.colors.darkText};
   display: flex;
   position: fixed;
   top: 0;
-  width: 24px;
-  height: 100vh;
+  width: 100%;
+  height: 48px;
+  z-index: 1;
+  padding: 0 16px;
   svg {
     width: 16px;
     height: 16px;
@@ -25,8 +27,8 @@ const FooterContainer = styled("footer")`
   position: fixed;
   bottom: 0;
   height: 38px;
-  background-color: ${(props) => props?.theme?.colors.darkBackground};
-  color: ${(props) => props?.theme?.colors.text};
+  background-color: ${(props) => props?.theme?.colors.lightBackground};
+  color: ${(props) => props?.theme?.colors.darkText};
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -36,8 +38,8 @@ const FooterContainer = styled("footer")`
 
 const Content = styled.div`
   flex: 1;
+  padding-top: 48px;
   padding-bottom: 38px;
-  padding-left: 24px;
 `;
 
 interface FrameProps {
@@ -70,8 +72,14 @@ export const Frame: Component<FrameProps> = (props) => {
             </For>
           </List>
         </Drawer>
-        <IconButton size="small" color="inherit" aria-label="menu" onClick={toggleDrawer}>
-          <MenuIcon />
+        <IconButton
+          size="small"
+          color="inherit"
+          aria-label="menu"
+          onClick={toggleDrawer}
+          sx={{ display: "flex", gap: "6px" }}
+        >
+          <MenuIcon /> Menu
         </IconButton>
       </MenuContainer>
       <Content>{props.children}</Content>

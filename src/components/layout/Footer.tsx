@@ -9,12 +9,12 @@ const InfoFooter = styled("div")`
 const Websites = styled("div")`
   display: flex;
   flex-direction: column;
-  color: ${(props) => props?.theme?.colors.text};
+  color: inherit;
   gap: 2px;
   font-size: 12px;
 
   a {
-    color: ${(props) => props?.theme?.colors.text};
+    color: inherit;
     text-decoration: none;
   }
 `;
@@ -25,7 +25,7 @@ const Socials = styled("div")`
   gap: 6px;
 
   a {
-    color: ${(props) => props?.theme?.colors.text};
+    color: inherit;
   }
 
   svg {
