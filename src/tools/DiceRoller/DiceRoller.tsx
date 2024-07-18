@@ -1,7 +1,10 @@
 import { createSignal, createEffect, For, Component } from "solid-js";
-import { Box, Button, TextField, Checkbox } from "@suid/material";
+import { Box, Button } from "@suid/material";
 import CasinoIcon from "@suid/icons-material/Casino";
 import RestartAltIcon from "@suid/icons-material/RestartAlt";
+import AddIcon from "@suid/icons-material/Add";
+import RemoveIcon from "@suid/icons-material/Remove";
+import { DiceDots } from "./DiceDots";
 
 export const DiceRoller: Component = () => {
   const [numDice, setNumDice] = createSignal<number>(1);
@@ -83,6 +86,14 @@ export const DiceRoller: Component = () => {
     initializeDice();
   };
 
+  const addDie = () => {
+    setNumDice((prev) => Math.min(prev + 1, 10));
+  };
+
+  const removeDie = () => {
+    setNumDice((prev) => Math.max(prev - 1, 1));
+  };
+
   return (
     <Box
       sx={{
@@ -95,13 +106,28 @@ export const DiceRoller: Component = () => {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", marginBottom: "20px", gap: "10px" }}>
-        <TextField
-          type="number"
-          label="Number of Dice"
-          value={numDice()}
-          onChange={(e) => setNumDice(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
-          inputProps={{ min: 1, max: 10 }}
-        />
+        <Button variant="outlined" onClick={removeDie} disabled={numDice() <= 1}>
+          <RemoveIcon />
+        </Button>
+        <Box
+          sx={{
+            minWidth: "40px",
+            textAlign: "center",
+            color: "#ffffff",
+            padding: "6px 15px",
+            borderRadius: "4px",
+            fontSize: "0.875rem",
+            fontWeight: 500,
+            lineHeight: 1.75,
+            textTransform: "uppercase",
+            backgroundColor: "#1976d2",
+          }}
+        >
+          {numDice()} dice
+        </Box>
+        <Button variant="outlined" onClick={addDie} disabled={numDice() >= 10}>
+          <AddIcon />
+        </Button>
         <Button
           variant="contained"
           onClick={rollDice}
@@ -135,8 +161,6 @@ export const DiceRoller: Component = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                fontSize: "24px",
-                fontWeight: "bold",
                 cursor: "pointer",
                 backgroundColor: selectedDice()[index()] ? "#e0e0e0" : "white",
                 transition: "all 0.5s ease",
@@ -144,21 +168,21 @@ export const DiceRoller: Component = () => {
               }}
               onClick={() => toggleDieSelection(index())}
             >
-              {value}
+              <DiceDots value={value} />
             </Box>
           )}
         </For>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
-        <Checkbox
-          checked={selectedDice().every(Boolean)}
-          indeterminate={selectedDice().some(Boolean) && !selectedDice().every(Boolean)}
-          onChange={() => {
+        <Button
+          variant="outlined"
+          onClick={() => {
             setSelectedDice((prev) => prev.map(() => !prev.every(Boolean)));
             updateSelectedSum(diceValues());
           }}
-        />
-        <span>Select/Deselect All</span>
+        >
+          {selectedDice().every(Boolean) ? "Deselect All" : "Select All"}
+        </Button>
       </Box>
       <Box sx={{ textAlign: "center" }}>
         <p>Sum of All Dice: {currentSum()}</p>

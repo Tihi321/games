@@ -2,7 +2,7 @@ import { createSignal, Show, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import { WebGames } from "./pages/WebGames";
 import { Frame } from "./components/layout/Frame";
-import { DiceRoller } from "./tools/DiceRoller";
+import { DiceRoller } from "./tools/DiceRoller/DiceRoller";
 import { Embed } from "./components/embed/Embed";
 import { getURLParams } from "./utils";
 
@@ -12,22 +12,22 @@ const Container = styled("div")`
   height: 100vh;
 `;
 
-const tools: string[] = ["webgames", "dice-roller", "kvizollama", "recko", "krizko"];
+const tools: string[] = ["dice-roller", "webgames", "kvizollama", "recko", "krizko"];
 
 export const App = () => {
   const [selectedPath, setSelectedPath] = createSignal<string>();
 
   onMount(() => {
     const initialPath = getURLParams("path");
-    setSelectedPath(initialPath || "webgames");
+    setSelectedPath(initialPath || "dice-roller");
   });
 
   return (
     <Container>
       <Frame tools={tools} onToolChange={(toolName: string) => setSelectedPath(toolName)}>
         <Show when={selectedPath()}>
-          {selectedPath() === "webgames" && <WebGames />}
           {selectedPath() === "dice-roller" && <DiceRoller />}
+          {selectedPath() === "webgames" && <WebGames />}
           {selectedPath() === "kvizollama" && (
             <Embed src="https://kvizollama.tihomir-selak.from.hr?footer=hide" title="Kvizollama" />
           )}

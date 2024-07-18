@@ -2,6 +2,7 @@ import { styled } from "solid-styled-components";
 import { createSignal, For, Component } from "solid-js";
 import { Drawer, List, ListItemButton, ListItemText, IconButton } from "@suid/material";
 import MenuIcon from "@suid/icons-material/Menu";
+import CropFreeIcon from "@suid/icons-material/CropFree";
 import replace from "lodash/replace";
 import startCase from "lodash/startCase";
 import { Footer } from "./Footer";
@@ -22,6 +23,13 @@ const MenuContainer = styled("nav")`
   }
 `;
 
+const FocusContainer = styled("nav")`
+  position: fixed;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+`;
+
 const FooterContainer = styled("footer")`
   display: flex;
   position: fixed;
@@ -36,10 +44,10 @@ const FooterContainer = styled("footer")`
   padding: 0 16px;
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ focus: boolean }>`
   flex: 1;
-  padding-top: 48px;
-  padding-bottom: 38px;
+  padding-top: ${(props) => (props.focus ? "0" : "48px")};
+  padding-bottom: ${(props) => (props.focus ? "0" : "38px")};
 `;
 
 interface FrameProps {
@@ -50,6 +58,7 @@ interface FrameProps {
 
 export const Frame: Component<FrameProps> = (props) => {
   const [isDrawerOpen, setIsDrawerOpen] = createSignal<boolean>(false);
+  const [focusMode, setFocusMode] = createSignal<boolean>(false);
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen());
 
   const selectTool = (toolName: string) => {
@@ -60,32 +69,48 @@ export const Frame: Component<FrameProps> = (props) => {
 
   return (
     <>
-      <MenuContainer>
-        <Drawer anchor="left" open={isDrawerOpen()} onClose={toggleDrawer}>
-          <List sx={{ width: "250px" }}>
-            <For each={props.tools}>
-              {(toolName, index) => (
-                <ListItemButton onClick={() => selectTool(toolName)}>
-                  {index() + 1}. <ListItemText primary={startCase(replace(toolName, "-", " "))} />
-                </ListItemButton>
-              )}
-            </For>
-          </List>
-        </Drawer>
+      {!focusMode() && (
+        <MenuContainer>
+          <Drawer anchor="left" open={isDrawerOpen()} onClose={toggleDrawer}>
+            <List sx={{ width: "250px" }}>
+              <For each={props.tools}>
+                {(toolName, index) => (
+                  <ListItemButton onClick={() => selectTool(toolName)}>
+                    {index() + 1}. <ListItemText primary={startCase(replace(toolName, "-", " "))} />
+                  </ListItemButton>
+                )}
+              </For>
+            </List>
+          </Drawer>
+          <IconButton
+            size="small"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer}
+            sx={{ display: "flex", gap: "6px" }}
+          >
+            <MenuIcon /> Menu
+          </IconButton>
+        </MenuContainer>
+      )}
+      <FocusContainer>
         <IconButton
           size="small"
           color="inherit"
           aria-label="menu"
-          onClick={toggleDrawer}
-          sx={{ display: "flex", gap: "6px" }}
+          onClick={() => setFocusMode(!focusMode())}
+          sx={{ display: "flex", gap: "6px", marginLeft: "auto" }}
         >
-          <MenuIcon /> Menu
+          <CropFreeIcon />
         </IconButton>
-      </MenuContainer>
-      <Content>{props.children}</Content>
-      <FooterContainer>
-        <Footer />
-      </FooterContainer>
+      </FocusContainer>
+
+      <Content focus={focusMode()}>{props.children}</Content>
+      {!focusMode() && (
+        <FooterContainer>
+          <Footer />
+        </FooterContainer>
+      )}
     </>
   );
 };
