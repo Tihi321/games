@@ -28,6 +28,12 @@ const FocusContainer = styled("nav")`
   top: 4px;
   right: 4px;
   z-index: 1;
+  opacity: 0.3;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const FooterContainer = styled("footer")`
@@ -46,8 +52,12 @@ const FooterContainer = styled("footer")`
 
 const Content = styled.div<{ focus: boolean }>`
   flex: 1;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
   padding-top: ${(props) => (props.focus ? "0" : "48px")};
   padding-bottom: ${(props) => (props.focus ? "0" : "38px")};
+  box-sizing: border-box;
 `;
 
 interface FrameProps {
