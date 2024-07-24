@@ -5,6 +5,7 @@ import { Frame } from "./components/layout/Frame";
 import { DiceRoller } from "./tools/DiceRoller/DiceRoller";
 import { Embed } from "./components/embed/Embed";
 import { getURLParams } from "./utils";
+import { replace, startCase } from "lodash";
 
 const Container = styled("div")`
   display: flex;
@@ -20,11 +21,18 @@ export const App = () => {
   onMount(() => {
     const initialPath = getURLParams("path");
     setSelectedPath(initialPath || "dice-roller");
+    document.title = `Games - ${startCase(replace("dice-roller", "-", " "))}`;
   });
 
   return (
     <Container>
-      <Frame tools={tools} onToolChange={(toolName: string) => setSelectedPath(toolName)}>
+      <Frame
+        tools={tools}
+        onToolChange={(toolName: string) => {
+          history.pushState({}, "", `?path=${toolName}`);
+          setSelectedPath(toolName);
+        }}
+      >
         <Show when={selectedPath()}>
           {selectedPath() === "dice-roller" && <DiceRoller />}
           {selectedPath() === "webgames" && <WebGames />}

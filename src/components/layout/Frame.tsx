@@ -73,7 +73,6 @@ export const Frame: Component<FrameProps> = (props) => {
 
   const selectTool = (toolName: string) => {
     props.onToolChange(toolName);
-    history.pushState({}, "", `?path=${toolName}`);
     setIsDrawerOpen(false);
   };
 
